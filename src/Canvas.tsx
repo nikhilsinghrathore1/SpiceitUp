@@ -16,6 +16,7 @@ const Canvas = () => {
                   repeat:-1,
                   duration:3,
                   ease:"linear",
+
                   onUpdate:()=>{
                     setindex({value: Math.round(index.value)})
                   }
