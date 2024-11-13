@@ -1,22 +1,33 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap/all';
+import * as React from 'react';
 import { useEffect, useRef, useState } from 'react'
-import { validateBaseChain } from 'web3/lib/commonjs/eth.exports';
 import canvasImages from './canvasImages';
 
 
-const Canvas = () => {
-               const [index, setindex] = useState({value:0})
+interface val {
+ dets:{
+  startIndex: number,
+  numImages: number,
+  duration: number,
+  size: number,
+  top: number,
+  left: number,
+  zIndex: number,
+ }
+}
+
+const Canvas:React.FC<val> = ({dets}) => {
+               const [index, setindex] = useState({value:dets.startIndex})
                const canvasref = useRef<HTMLCanvasElement |null>(null )
 
 
               useGSAP(()=>{
                 gsap.to(index,{
-                  value:149,
+                  value:dets.startIndex + 149,
                   repeat:-1,
-                  duration:3,
+                  duration:dets.duration,
                   ease:"linear",
-
                   onUpdate:()=>{
                     setindex({value: Math.round(index.value)})
                   }
@@ -27,14 +38,18 @@ const Canvas = () => {
 
                 const canvas = canvasref.current;
                 if(canvas !== null){
-
+                   const scale = window.devicePixelRatio; 
                   const ctx = canvas.getContext("2d")
                   const img = new Image();
                   img.src = canvasImages[index.value]
                   img.onload = () =>{
-                    canvas.width = img.width,
-                    canvas.height = img.height,
-                    ctx?.drawImage(img,0,0)
+                    canvas.width = canvas.offsetWidth * scale,
+                    canvas.height = canvas.offsetHeight * scale,
+                    canvas.style.width = canvas.offsetWidth +"px"
+                    canvas.style.height = canvas.offsetHeight +"px"
+                    ctx?.scale(scale,scale)
+                    ctx?.drawImage(img,0,0, canvas.offsetWidth, canvas.offsetHeight)
+
 
                   }
                 }
@@ -42,7 +57,7 @@ const Canvas = () => {
                }, [index])
                
   return (
-               <canvas ref={canvasref} className="w-[18rem] h-[18rem] " id='canvasId'></canvas>
+               <canvas data-scroll data-scroll-speed={Math.random().toFixed(1)} style={{width:`${dets.size *1.3}px` , height:`${dets.size *1.3}px` , top:`${dets.top}%` , left:`${dets.left}%` , zIndex:`${dets.zIndex}`}} className="absolute" ref={canvasref}   id='canvasId'></canvas>
   )
 }
 

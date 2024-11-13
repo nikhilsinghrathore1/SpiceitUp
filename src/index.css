@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--radius: 35vmin;
+	--frame-size: calc(var(--radius) / 3);
+	--d-outer: calc(var(--radius) * 2);
+	--d-inner: calc(var(--d-outer) - var(--frame-size));
+	--font-size: calc(var(--radius) / 10);
+}
+
+@font-face {
+               font-family: font1;
+               src: url("../public/PPNeueMontreal-Medium.431960c2.ttf");
+}
+@font-face {
+               font-family: font2;
+               src: url("../public/PPNeueMontreal-Regular.48a63c42.ttf");
+}
+
+.f1{
+               font-family: font1;
+}
+.f2{
+               font-family: font2;
+}
+
