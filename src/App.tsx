@@ -11,9 +11,14 @@ import data from './data'
 import { useEffect, useRef, useState } from 'react';
 
 function App() {
-  const circular = useRef<HTMLHeadingElement | null>(null)
 
+  const circular = useRef<HTMLHeadingElement | null>(null)
+  const [openChili , setopenChili] = useState(true)
   
+  const changeChili = () =>{
+    setopenChili(prev=>!prev)
+  }
+
   useEffect(()=>{
     const locomotiveScroll = new LocomotiveScroll({
       lenisOptions: {
@@ -49,16 +54,20 @@ if(text){
   
   const [theme, settheme] = useState(true)
   const changeTheme = ()=>{
+    setopenChili(false)
     settheme(prev=>!prev)
   }
 
   return (
     <>
-    <div className={`w-full transition-all duration-300  ease-in min-h-screen relative ${theme ?  "bg-[#FFFAFA] text-black" : "bg-black text-white" }`}>
-
-      {/* {data[0].map((item,i)=>(
+    <div className={`w-full transition-all duration-300  ease-in min-h-screen relative ${openChili ? "bg-[#FD2C2A] text-black" :  (theme ?  "bg-[#FFFAFA] text-black" : "bg-black text-white" ) }`}>
+      {openChili && 
+      <>
+      {data[0].map((item,i)=>(
         <Canvas dets={item} />
-      ))} */}
+        ))}
+      </>
+      }
 
       <div className='h-[23%]  text-white items-center  py-3 w-[3.5%] bg-black absolute flex flex-col justify-between right-0 top-1/2 -translate-y-1/2'>
           <h1 className='font-bold text-center'>N.</h1>
@@ -138,7 +147,7 @@ if(text){
                   </div>
             </div>
         {/* this is the main text of the first page  name of the studio */}
-            <div className='w-full mt-40 overflow-hidden'>
+            <div onClick={()=>changeChili()} className='w-full  mt-40 overflow-hidden'>
               <h1 className='text-[14.7rem] f2 tracking-[0.007em] '>Thirtysixstudio</h1>
             </div>
           </div>
